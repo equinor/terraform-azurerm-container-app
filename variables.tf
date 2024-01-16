@@ -52,26 +52,29 @@ variable "ingress" {
     allow_insecure_connections = optional(bool, false)
     external_enabled           = bool
     target_port                = number
-    traffic_weight = optional(object({
-      latest_revision = optional(bool, true)
-      percentage      = optional(number, 100)
-    }))
   })
+}
+
+variable "traffic_weight" {
+  description = "Traffic weight properties."
+  type = object({
+    latest_revision = optional(bool, true)
+    percentage      = optional(number, 100)
+  })
+  default = {}
 }
 
 variable "containers" {
   description = "Container App properties."
   type = map(object({
-    container = object({
-      name   = string
-      image  = string
-      cpu    = number
-      memory = string
-      env = map(object({
-        name        = string
-        secret_name = optional(string, "")
-        value       = optional(string, "")
-      }))
-    })
+    name   = string
+    image  = string
+    cpu    = number
+    memory = string
+    env = map(object({
+      name        = string
+      secret_name = optional(string, "")
+      value       = optional(string, "")
+    }))
   }))
 }
